@@ -140,6 +140,10 @@ for (e in RawIn) {
                    e)) {
       
     }
+    else if (grepl("Afbestilt",
+                   e)) {
+      
+    }
     
     # Else, it's analyte data
     else {
@@ -173,7 +177,7 @@ for (e in RawIn) {
 
 # Remove TimesList[[]] that are all cancelled
 for (T in length(TimesList):1) {
-  if (is.numeric(TimesList[[T]][1])) {
+  if (is.numeric(TimesList[[T]])) {
     TimesList[[T]] <- NULL
     Times <- Times[-T]
   }

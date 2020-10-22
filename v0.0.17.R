@@ -67,7 +67,7 @@ source("~/Ongoing projects/Graphical Lab/v0.1/SP/axesf0.0.17.R")
 #-----------------------------------------------------------------
 
 # Initialize plot
-source("~/Ongoing projects/Graphical Lab/v0.1/SP/initplot0.0.17.R")
+#source("~/Ongoing projects/Graphical Lab/v0.1/SP/initplot0.0.17.R")
 
 #-----------------------------------------------------------------
 
@@ -261,9 +261,8 @@ transform_add <- function(tmp,
 #  tmp$hovertext[abs(tmp$SD) < 2] <- ""
   
   # add trace to pltydsigm
-  pltydsigm <- add_trace(pltydsigm,
-                         
-                         # dataset is temp
+  pltydsigm <- pltydsigm %>% 
+    add_trace(# dataset is temp
                          data = tmp,
                          
                          # X is time
@@ -514,26 +513,46 @@ harvesttime <- toc() - harvesttime
 
 
 tic()
-# Plot only normal results
+plts <- list()
+
+# Plot only abnormal results
 for (h in 1:length(harvested)) {
   if (Metadata[h,3] == FALSE) {
+    # If plot doesn't exist, initialise it
+    if (!("Abnormal" %in% names(plts))) {
+      plts[["Abnormal"]] <- pltydsigm
+    }
     
     # Add to plot
-    pltydsigm <- transform_add(harvested[[h]],
-                               pltydsigm,
+    plts[["Abnormal"]] <- transform_add(harvested[[h]],
+                               plts[["Abnormal"]],
                                yssigm2,
                                dsigmtrdt,
                                linetypes[(h-1)%/%10+1],
                                linecolours[(h-1)%%10+1],
                                c(Metadata[h,5:6]))
     
+  } else {
+    # If plot doesn't exist, initialise it
+    if (!("Normal" %in% names(plts))) {
+      plts[["Normal"]] <- pltydsigm
+    }
+    # Add to plot
+    plts[["Normal"]] <- transform_add(harvested[[h]],
+                                    plts[["Normal"]],
+                                    yssigm2,
+                                    dsigmtrdt,
+                                    linetypes[(h-1)%/%10+1],
+                                    linecolours[(h-1)%%10+1],
+                                    c(Metadata[h,5:6]))
+
   }
 }
 
 
 
 ###
-pltydsigm # make the graph!
+plts # make the graph!
 
 
 # save as HTML widget, too

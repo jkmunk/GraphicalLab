@@ -17,3 +17,4 @@ yssigm2 <- yssigm2*10 # Adjustment to give it the same range as Y axis
 dsigmtrdt <- data.table(cbind(intervals,
                               yssigm2),
                         key="intervals") # Bind them in data frame
+
