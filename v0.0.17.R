@@ -67,7 +67,7 @@ source("~/Ongoing projects/Graphical Lab/v0.1/SP/axesf0.0.17.R")
 #-----------------------------------------------------------------
 
 # Initialize plot
-#source("~/Ongoing projects/Graphical Lab/v0.1/SP/initplot0.0.17.R")
+source("~/Ongoing projects/Graphical Lab/v0.1/SP/initplot0.0.17.R")
 
 #-----------------------------------------------------------------
 
@@ -263,62 +263,53 @@ transform_add <- function(tmp,
   # add trace to pltydsigm
   pltydsigm <- pltydsigm %>% 
     add_trace(# dataset is temp
-                         data = tmp,
-                         
-                         # X is time
-                         x= ~time,
-                         
-                         # Y is transformed data
-                         y= ~SDtrans,
-                         
-                         # type is scatter
-                         type="scatter",
-                         
-                         # mode is markers and lines
-                         mode="markers+lines",
-                         
-                         # set line type
-                         line = list(dash = linetype,
-                                     color = linecolour),
-                         
-                         # marker colour
-                         marker = list(color = linecolour),
-                         
-                         # define hovertext, first analysis name
-                         text = tmp$hovertext,
-                         
-                         # set hoverinfo to what was defined
-                         hoverinfo = 'text',
-                         
-                         # set data series name
-                         name = analysis[1],
-                         
-#                         # set group
-#                         customdata = analysis[8],
-                         
-                         # assign to legend group
-                         legendgroup = analysis[1],
-                         
-                         # set Y error bar to type "data"
-                         error_y = list(type="data",
-                                        
-                                        # asymmetrical error bars
-                                        symmetric=FALSE,
-                                        
-                                        # positive error bar lengths
-                                        array=tmp$uptrans,
-                                        
-                                        # negative error bar lengths
-                                        arrayminus=tmp$dntrans,
-                                        
-                                        # error bar colour
-                                        color = linecolour)) %>%
-    
-    # Play with what hovertexts are being displayed - doesn't work the way I want it to; i.e.
-    # I would like to show only those hovertexts that are from datapoints within a reasonably short
-    # distance from the cursor
-    layout(hoverdistance = 1,
-           hovermode = "x") %>% 
+      data = tmp,
+      
+      # X is time
+      x= ~time,
+      
+      # Y is transformed data
+      y= ~SDtrans,
+      
+      # type is scatter
+      type="scatter",
+      
+      # mode is markers and lines
+      mode="markers+lines",
+      
+      # set line type
+      line = list(dash = linetype,
+                  color = linecolour),
+      
+      # marker colour
+      marker = list(color = linecolour),
+      
+      # define hovertext, first analysis name
+      text = tmp$hovertext,
+      
+      # set hoverinfo to what was defined
+      hoverinfo = 'text',
+      
+      # set data series name
+      name = analysis[1],
+      
+      # assign to legend group
+      legendgroup = analysis$NPU,
+      
+      # set Y error bar to type "data"
+      error_y = list(type="data",
+                     
+                     # asymmetrical error bars
+                     symmetric=FALSE,
+                     
+                     # positive error bar lengths
+                     array=tmp$uptrans,
+                     
+                     # negative error bar lengths
+                     arrayminus=tmp$dntrans,
+                     
+                     # error bar colour
+                     color = linecolour)) %>%
     
     # Trace between markers
     
@@ -330,6 +321,9 @@ transform_add <- function(tmp,
               y = c(tmp$SDtrans + tmp$uptrans,
                     rev(tmp$SDtrans - tmp$dntrans)),
               
+              # set data series name
+              name = analysis[1],
+
               # Type scatter
               type = 'scatter',
               
@@ -350,13 +344,19 @@ transform_add <- function(tmp,
               marker = list(color = 'transparent'),
               
               # assign to legend group
-              legendgroup = analysis[1],
+              legendgroup = analysis$NPU,
               
               # turn off legend entry for trace
               showlegend = FALSE,
               
               # turn off hoverinfo
-              hoverinfo = 'none')
+              hoverinfo = 'none') %>% 
+    
+    # Play with what hovertexts are being displayed - doesn't work the way I want it to; i.e.
+    # I would like to show only those hovertexts that are from datapoints within a reasonably short
+    # distance from the cursor
+    layout(hoverdistance = 1,
+           hovermode = "x")
   
   # Return the new plot
   return(pltydsigm)
@@ -491,7 +491,8 @@ for (d in 1:nrow(Data)) { # For every analyte,
                       ((max(tmp$SD) < 2) & (min(tmp$SD) > -2)),
                       (nrow(tmp) == 1),
                       Alistrow$SPnavn,
-                      Alistrow$Enhed))
+                      Alistrow$Enhed,
+                      Alistrow$NPU))
   }
 }
 
@@ -500,7 +501,8 @@ colnames(Metadata) <- c("Class",
                         "Normal",
                         "Single",
                         "Name",
-                        "Unit")
+                        "Unit",
+                        "NPU")
 
 harvesttime <- toc() - harvesttime
 ###
@@ -530,7 +532,7 @@ for (h in 1:length(harvested)) {
                                dsigmtrdt,
                                linetypes[(h-1)%/%10+1],
                                linecolours[(h-1)%%10+1],
-                               c(Metadata[h,5:6]))
+                               c(Metadata[h,5:7]))
     
   } else {
     # If plot doesn't exist, initialise it
@@ -544,7 +546,7 @@ for (h in 1:length(harvested)) {
                                     dsigmtrdt,
                                     linetypes[(h-1)%/%10+1],
                                     linecolours[(h-1)%%10+1],
-                                    c(Metadata[h,5:6]))
+                                    c(Metadata[h,5:7]))
 
   }
 }
@@ -553,7 +555,6 @@ for (h in 1:length(harvested)) {
 
 ###
 plts # make the graph!
-
 
 # save as HTML widget, too
 # htmlwidgets::saveWidget(as_widget(pltydsigm), 

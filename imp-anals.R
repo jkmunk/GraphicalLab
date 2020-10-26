@@ -29,7 +29,8 @@ ThisPtAnalyses <- analyses %>%
          Group,
          Class,
          Sex,
-         AgeToY) %>% 
+         AgeToY,
+         NPU) %>% 
   filter(Sex %in% c(ptSex,"B")) %>% 
   filter(AgeToY >= ptAge) %>% 
   group_by(SPnavn) %>% 
