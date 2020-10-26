@@ -4,11 +4,7 @@
 # With new, log x axis!
 
 # Left to implement/ideas:
-# - Look at partial time, possibly at first present histogram-like plot of
-#   data density in which user can pick a range to view
-# - When looking at only some traces, +/- 2 SD lines disappear. Somehow keep 
-#   them in at all times
-# - Tabs for classes of analyses as https://dashr.plotly.com/dash-core-components/tabs
+# - Buttons for classes of analyses
 # - Grouped analyses that can be turned on/off with one click - requires legendgroup
 #   or similar in more than one level
 #
@@ -559,89 +555,6 @@ plts # make the graph!
 # save as HTML widget, too
 # htmlwidgets::saveWidget(as_widget(pltydsigm), 
 #                         "~/Ongoing projects/Graphical Lab/index.html")
-
-
-# pltydsigm <- pltydsigm %>% layout(
-#   title = "Button",
-#   updatemenus = list(
-#     list(
-#       type = "buttons",
-#       buttons = list(
-#         list(method = "restyle",
-#              args = list("line.color",
-#                          "blue"),
-#              label = "Blue"),
-#         list(method = "restyle",
-#              args = list("line.color",
-#                          "red"),
-#              label = "Red")
-#       )
-#     )
-#   )
-# )
-
-# Try this with hovertexts
-# Two types of hovertexts; one for data within -2 - 2 SD, and another for data outside that.
-
-
-# pltydsigm <- pltydsigm %>% layout(
-#   title = "SD",
-#   updatemenus = list(
-#     list(
-#       type = "dropdown",
-#       buttons = list(
-#         list(method = "restyle",
-#              args = list("line.color",
-#                          "blue"),
-#              label = "Blue"),
-#         list(method = "restyle",
-#              args = list("line.color",
-#                          "red"),
-#              label = "Red")
-#       )
-#     )
-#   )
-# )
-# 
-# 
-# # Play with groups of analyses
-# 
-# # There are three groups:
-# #   Hematology
-# #   Immunology
-# #   Chemistry
-# 
-# pltydsigm <- pltydsigm %>% layout(
-#   updatemenus <- list(
-#     list(
-#       active = -1,
-#       type= 'buttons',
-#       buttons = list(
-#         list(
-#           label = "Alle",
-#           method = "update",
-#           args = list(list(visible = c(TRUE, 
-#                                        TRUE,
-#                                        TRUE)))),
-#         list(
-#           label = "Hæmatologi",
-#           method = "update",
-#           args = list(list(visible = c(TRUE, 
-#                                        FALSE,
-#                                        FALSE)))),
-#         list(
-#           label = "Immunologi",
-#           method = "update",
-#           args = list(list(visible = c(FALSE,
-#                                        TRUE, 
-#                                        FALSE)))),
-#         list(
-#           label = "Kemi",
-#           method = "update",
-#           args = list(list(visible = c(FALSE,
-#                                        FALSE,
-#                                        TRUE))))))))
-# 
 
 harvesttime
 toc()

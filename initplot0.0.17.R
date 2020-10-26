@@ -11,14 +11,14 @@ pltydsigm <- plot_ly(strline) %>%
          title = paste0(ptSex, ", ", ptAge, " år"),
          #         title = "CPR-nummer og navn",
          xaxis = list(title="Dato",
-           gridcolor="#888888",
-           range=c(Xticks[1]-.1,
-                   Xticks[length(Xticks)]+.1),
-           tickangle=45,tickvals=Xticks,
-           ticktext=as.POSIXct(Xticks*60*60*24,
-                               origin = "1900-01-01",
-                               tz="GMT"),
-           rangeslider = list(type = "date")),
+                      gridcolor="#888888",
+                      range=c(Xticks[1]-.1,
+                              Xticks[length(Xticks)]+.1),
+                      tickangle=45,tickvals=Xticks,
+                      ticktext=as.POSIXct(Xticks*60*60*24,
+                                          origin = "1900-01-01",
+                                          tz="GMT"),
+                      rangeslider = list(type = "date")),
          
          yaxis = list(title="SD",
                       gridcolor="#888888",
@@ -32,12 +32,31 @@ pltydsigm <- plot_ly(strline) %>%
                      t=100),
          
          updatemenus = list(
-           list(
+           list(# X range selector buttons
              active = -1,
              type = 'buttons',
+             direction = "right",
+             xanchor = 'center',
+             yanchor = "top",
+             pad = list('r'= 0, 't'= 10, 'b' = 10),
+             x = 0.5,
+             y = 1.3,
              buttons = list(
                list(
-                 label = 'Et år',
+                 label = 'Alt',
+                 method = "relayout",
+                 args = list(list(#xaxis = list(range = as.POSIXct(c(min(Xticks), max(Xticks)), origin = "1970-01-01")),
+                   xaxis = list(title="Dato",
+                                gridcolor="#888888",
+                                range=c(Xticks[1]-.1,
+                                        Xticks[length(Xticks)]+.1),
+                                tickangle=45,tickvals=Xticks,
+                                ticktext=as.POSIXct(Xticks*60*60*24,
+                                                    origin = "1900-01-01",
+                                                    tz="GMT"),
+                                rangeslider = list(type = "date"))))),
+               list(
+                 label = '1 år',
                  method = "relayout",
                  args = list(list(#xaxis = list(range = as.POSIXct(c(max(Xticks) - 30,max(Xticks)), origin= "1970-01-01")),
                    xaxis = list(title="Dato",
@@ -74,25 +93,14 @@ pltydsigm <- plot_ly(strline) %>%
                                 ticktext=as.POSIXct(Xticks*60*60*24,
                                                     origin = "1900-01-01",
                                                     tz="GMT"),
-                                rangeslider = list(type = "date"))))),
-               list(
-                 label = 'Alle',
-                 method = "relayout",
-                 args = list(list(#xaxis = list(range = as.POSIXct(c(min(Xticks), max(Xticks)), origin = "1970-01-01")),
-                                  xaxis = list(title="Dato",
-                                               gridcolor="#888888",
-                                               range=c(Xticks[1]-.1,
-                                                       Xticks[length(Xticks)]+.1),
-                                               tickangle=45,tickvals=Xticks,
-                                               ticktext=as.POSIXct(Xticks*60*60*24,
-                                                                   origin = "1900-01-01",
-                                                                   tz="GMT"),
-                                               rangeslider = list(type = "date"))))
+                                rangeslider = list(type = "date")))))
              )
-           )
+           ),
+           list(# Data selector buttons?
+             
+           ) 
          )
-
-  )) %>%
+  ) %>%
   
   add_segments(x=as.numeric(min(names(Data)[2:ncol(Data)]))-.1,
                xend=as.numeric(max(names(Data)[2:ncol(Data)]))+.1,
